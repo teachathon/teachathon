@@ -1,11 +1,11 @@
 {
     "mcq": {
-        "prompt": "C:/Users/benedeklabancz/!_Extr/TeachAThon/specs/prompts/mcq.txt",
-        "template": "C:/Users/benedeklabancz/!_Extr/TeachAThon/specs/templates/mcq.json"
+        "prompt": "./specs/prompts/mcq.txt",
+        "template": "./specs/templates/mcq.json"
     },
 
     "open_ended": {
-        "prompt": "C:/Users/benedeklabancz/!_Extr/TeachAThon/specs/prompts/open_ended.txt",
-        "template": "C:/Users/benedeklabancz/!_Extr/TeachAThon/specs/templates/open_ended.json"
+        "prompt": "./specs/prompts/open_ended.txt",
+        "template": "./specs/templates/open_ended.json"
     }
 }
