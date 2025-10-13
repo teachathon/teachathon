@@ -1,5 +1,6 @@
 # LLM Comprehension Quiz Generation
-## [Link to report](https://docs.google.com/document/d/1j4v1ITYjrSelpK56IqW31xNUDVgVqI0OAKsK8H4oR8k/edit?usp=sharing)
+## <a href="https://docs.google.com/document/d/1j4v1ITYjrSelpK56IqW31xNUDVgVqI0OAKsK8H4oR8k/edit?usp=sharing" target="_blank">Link to report</a>
+
 
 
 ## Environment Setup
