@@ -4,5 +4,6 @@ configs/base.json
 credentials.json
 token.pickle
 last_form_url.txt
-*.pyc
+configs/base.json
 base.json
+*.pyc
