@@ -1,5 +1,5 @@
 {
     "base_url": "https://openrouter.ai/api/v1",
-    "api_key": "...",
+    "api_key": "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",
     "chat_model": "google/gemini-2.5-flash"
 }

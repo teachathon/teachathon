@@ -1,5 +1,6 @@
 from src.agent import Agent
 from src.forms_generator import GoogleFormsGenerator
+from src.flashcard_generator import FlashcardGenerator
 import json
 from pathlib import Path
 import random
@@ -8,7 +9,7 @@ with open("./specs/base.json", "r") as j:
     SPEC_PATHS = json.loads(j.read())
 
 SYSTEM_PROMPTS = {}
-for qtype in ["mcq", "open_ended"]:
+for qtype in ["mcq", "open_ended", "flashcard"]:
     SYSTEM_PROMPTS[qtype] = {}
     for spec in ["prompt", "template"]:
         file_path = Path(SPEC_PATHS[qtype][spec])
@@ -25,6 +26,7 @@ with open("./test/conversations/dummy.txt", "r", encoding="utf-8") as f:
 if __name__ == "__main__":
     num_mcq = int(input("Enter number of MCQ questions to generate: "))
     num_open = int(input("Enter number of open-ended questions to generate: "))
+    num_flashcards = int(input("Enter number of flashcards to generate (0 to skip): "))
 
     agent = Agent(config=CONFIG)
     agent.send_message(QUERY)
@@ -86,3 +88,28 @@ if __name__ == "__main__":
     
     print("Answer distribution:", answer_balance)
     print(form_url)
+    
+    # Generate flashcards if requested
+    if num_flashcards > 0:
+        print("\n🎓 Generating flashcards...")
+        
+        # Generate flashcards using the same agent
+        flashcard_response = agent.receive_response(
+            output_template=SYSTEM_PROMPTS["flashcard"]["template"],
+            system_prompt=SYSTEM_PROMPTS["flashcard"]["prompt"] + f"\n\nGenerate exactly {num_flashcards} flashcards from this conversation.",
+            auto_append=False
+        )
+        
+        flashcard_data = json.loads(flashcard_response["content"])
+        flashcards = flashcard_data["flashcards"][:num_flashcards]  # Ensure we don't exceed requested number
+        
+        # Create and open interactive flashcards
+        flashcard_gen = FlashcardGenerator()
+        html_path = flashcard_gen.generate_and_open_flashcards(
+            flashcards, 
+            f"flashcards_{num_flashcards}_cards.html"
+        )
+        
+        print(f"✅ Flashcards generated and opened in browser!")
+        print(f"📁 Flashcard file: {html_path}")
+        print(f"🌐 You can also open: file://{html_path}")

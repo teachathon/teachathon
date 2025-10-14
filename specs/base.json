@@ -7,5 +7,10 @@
     "open_ended": {
         "prompt": "./specs/prompts/open_ended.txt",
         "template": "./specs/templates/open_ended.json"
+    },
+
+    "flashcard": {
+        "prompt": "./specs/prompts/flashcard.txt",
+        "template": "./specs/templates/flashcard.json"
     }
 }
