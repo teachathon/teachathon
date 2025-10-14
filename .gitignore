@@ -3,5 +3,6 @@ __pycache__/
 credentials.json
 token.pickle
 last_form_url.txt
+configs/base.json
 base.json
 *.pyc
