@@ -1,2 +1,6 @@
 .env/
 __pycache__/
+credentials.json
+token.pickle
+last_form_url.txt
+*.pyc
