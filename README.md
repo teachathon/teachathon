@@ -1,5 +1,14 @@
-# LLM Comprehension Quiz Generation
-## <a href="https://docs.google.com/document/d/1j4v1ITYjrSelpK56IqW31xNUDVgVqI0OAKsK8H4oR8k/edit?usp=sharing" target="_blank">Link to report</a>
+# MindfuLLM: LLM Comprehension Quiz Generation
+
+## To view our report on this project, click here: <a href="https://docs.google.com/document/d/1j4v1ITYjrSelpK56IqW31xNUDVgVqI0OAKsK8H4oR8k/edit?usp=sharing" target="_blank">Link to report</a>
+
+## Summary
+_`MindfuLLM` will generate a daily quiz based on academic content you've discussed with ChatGPT or Edinburgh's proprietary large language model, in order to reinforce the shallow learning that has happened during the day. _
+
+
+
+
+
 
 
 
