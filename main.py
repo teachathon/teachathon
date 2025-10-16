@@ -1,11 +1,12 @@
-from src.agent import Agent
-from src.forms_generator import GoogleFormsGenerator
-from dotenv import load_dotenv
 import json
 import os
 import sys
 from pathlib import Path
 import random
+import re
+from src.agent import Agent
+from src.forms_generator import GoogleFormsGenerator
+from dotenv import load_dotenv
 
 with open("./specs/base.json", "r") as j:
     SPEC_PATHS = json.loads(j.read())
@@ -37,7 +38,14 @@ def resolve_api_key(config: dict) -> str:
 def prompt_for_int(prompt: str) -> int:
     """Prompt the user until a non-negative integer is provided."""
     while True:
-        raw_value = input(prompt).strip()
+        try:
+            raw_value = input(prompt).strip()
+        except EOFError:
+            print("Input stream closed unexpectedly.", file=sys.stderr)
+            sys.exit(1)
+        except KeyboardInterrupt:
+            print("\nInput cancelled by user.", file=sys.stderr)
+            sys.exit(1)
         try:
             parsed = int(raw_value)
         except ValueError:
@@ -51,6 +59,32 @@ def prompt_for_int(prompt: str) -> int:
         return parsed
 
 
+EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def prompt_for_email(prompt: str) -> str:
+    """Prompt the user until a syntactically valid email address is provided."""
+    while True:
+        try:
+            raw_value = input(prompt).strip()
+        except EOFError:
+            print("Input stream closed unexpectedly.", file=sys.stderr)
+            sys.exit(1)
+        except KeyboardInterrupt:
+            print("\nInput cancelled by user.", file=sys.stderr)
+            sys.exit(1)
+
+        if not raw_value:
+            print("Email address is required.", file=sys.stderr)
+            continue
+
+        if not EMAIL_PATTERN.match(raw_value):
+            print("Please enter a valid email address (example: name@example.com).", file=sys.stderr)
+            continue
+
+        return raw_value
+
+
 if __name__ == "__main__":
     load_dotenv()
     try:
@@ -58,8 +92,12 @@ if __name__ == "__main__":
     except RuntimeError as exc:
         sys.exit(str(exc))
 
+    user_email = prompt_for_email("Enter your email address: ")
+    CONFIG["user_email"] = user_email
+
     num_mcq = prompt_for_int("Enter number of MCQ questions to generate: ")
     num_open = prompt_for_int("Enter number of open-ended questions to generate: ")
+    
     
 
     agent = Agent(config=CONFIG)
