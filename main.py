@@ -10,7 +10,8 @@ from src.processing import (
     load_config, 
     load_system_prompts,
     resolve_api_key,
-    generate_questions
+    generate_questions,
+    generate_title
 ) 
 
 @asynccontextmanager
@@ -54,9 +55,15 @@ async def receive_from_extension(data: ExtensionData):
         system_propmts=app.state.system_prompts
     )
 
+    quiz_title = generate_title(
+        agent=app.state.agent,
+        questions=questions,
+        system_propmts=app.state.system_prompts
+    )
+
     form_url = app.state.form_generator.create_quiz_from_json(
         questions,
-        form_title="Quiz"
+        form_title=quiz_title
     )
 
     print(f"Quiz generated at URL: {form_url}")
