@@ -1,5 +1,4 @@
 {
     "base_url": "https://openrouter.ai/api/v1",
-    "api_key": "...",
     "chat_model": "google/gemini-2.5-flash"
 }
