@@ -90,6 +90,9 @@ class Agent:
         })
         self.conversation.set_system(default_system_prompt)
 
+    def reset_conversation(self) -> None:
+        self.conversation = Conversation()
+
     def send_message(self, content: str) -> dict:
         return self.conversation.append(
             RoleEnum.USER.value,
