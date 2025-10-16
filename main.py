@@ -34,6 +34,23 @@ def resolve_api_key(config: dict) -> str:
         )
     return candidate
 
+def prompt_for_int(prompt: str) -> int:
+    """Prompt the user until a non-negative integer is provided."""
+    while True:
+        raw_value = input(prompt).strip()
+        try:
+            parsed = int(raw_value)
+        except ValueError:
+            print("Please enter a whole number.", file=sys.stderr)
+            continue
+
+        if parsed < 0:
+            print("Number of questions cannot be negative.", file=sys.stderr)
+            continue
+
+        return parsed
+
+
 if __name__ == "__main__":
     load_dotenv()
     try:
@@ -41,8 +58,8 @@ if __name__ == "__main__":
     except RuntimeError as exc:
         sys.exit(str(exc))
 
-    num_mcq = int(input("Enter number of MCQ questions to generate: "))
-    num_open = int(input("Enter number of open-ended questions to generate: "))
+    num_mcq = prompt_for_int("Enter number of MCQ questions to generate: ")
+    num_open = prompt_for_int("Enter number of open-ended questions to generate: ")
     
 
     agent = Agent(config=CONFIG)
