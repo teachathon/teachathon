@@ -1,6 +1,9 @@
 from src.agent import Agent
 from src.forms_generator import GoogleFormsGenerator
+from dotenv import load_dotenv
 import json
+import os
+import sys
 from pathlib import Path
 import random
 
@@ -22,9 +25,25 @@ with open("./configs/base.json", "r") as j:
 with open("./test/conversations/dummy.txt", "r", encoding="utf-8") as f:
     QUERY = f.read()
 
+def resolve_api_key(config: dict) -> str:
+    env_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+    candidate = env_key
+    if not candidate or candidate == "...":
+        raise RuntimeError(
+            "Missing API key. Set the OPENROUTER_API_KEY environment variable before running the script."
+        )
+    return candidate
+
 if __name__ == "__main__":
+    load_dotenv()
+    try:
+        CONFIG["api_key"] = resolve_api_key(CONFIG)
+    except RuntimeError as exc:
+        sys.exit(str(exc))
+
     num_mcq = int(input("Enter number of MCQ questions to generate: "))
     num_open = int(input("Enter number of open-ended questions to generate: "))
+    
 
     agent = Agent(config=CONFIG)
     agent.send_message(QUERY)
