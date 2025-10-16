@@ -25,6 +25,9 @@ def load_system_prompts(path_to_specs: str | Path) -> dict:
             file_extension = file_path.suffix.lower()
             with open(file_path, "r") as f:
                 system_prompts[qtype][spec] = json.loads(f.read()) if file_extension == ".json" else f.read()
+    with open(spec_paths["quiz_title"], "r") as f:
+        system_prompts["quiz_title"] = f.read()
+    
     return system_prompts    
 
 def resolve_api_key(config: dict) -> str:
@@ -110,3 +113,18 @@ def generate_questions(agent: Agent, messages: list[dict],
         questions.append(open_content)
 
     return questions
+
+def generate_title(agent: Agent, questions: list[dict], system_propmts: dict) -> str:
+    agent.reset_conversation()
+
+    query = "\n".join([str(question) for question in questions])
+    agent.send_message(query)
+
+    response = agent.receive_response(
+        output_template={"title": "..."},
+        system_prompt=system_propmts["quiz_title"],
+        auto_append=False
+    )
+    content = json.loads(response["content"])
+    title = content["title"]
+    return title
