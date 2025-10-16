@@ -7,29 +7,37 @@
 
 
 
-
-
-
-
-
 ## Environment Setup
 
 Run `pip install -r requirements.txt` in your desired environment.
 
-## Generating Questions
+## Running the Server
 
-Run `main.py` for an example.
+For development purposes: run `fastapi dev main.py` on the project root.
 
-The general pattern for generating one or more questions:
-```python 
-    agent = Agent(config=CONFIG)
-    agent.send_message(QUERY)
+## Generating Quizzes
 
-    # Generate question
-    response = agent.receive_response(
-        output_template=SYSTEM_PROMPTS["mcq" | "open_ended"]["template"], 
-        system_prompt=SYSTEM_PROMPTS["mcq" | "open_ended"]["prompt"], 
-        auto_append=False)
-    response_content = json.loads(response["content"])
-    print(json.dumps(response_content, indent=4))
+To generate a quiz, you must submit a POST request to the `/receive` enpoint on the server.
+An example is in `test/test_request.py`:
+
+```python
+import requests
+
+data = {
+        "num_mcq": 1,
+        "num_open": 1,
+        "messages": [
+            {"conv_id": 0, "role": "user", "content": "Hey, can you tell me a bit about the rise of the Roman Empire?"},
+            {"conv_id": 0, "role": "assistant", "content": "Of course! The Roman Empire rose from the Roman Republic around 27 BCE when Augustus became the first emperor. It marked a shift from a republic led by elected officials to a centralized imperial system."},
+            ...
+        ]
+    }
+
+response = requests.post(
+    "http://127.0.0.1:8000/receive",
+    json=data
+)
+
+print(response.status_code)  # Should be 200
+print(response.json())       # {"status": "ok"}
 ```
