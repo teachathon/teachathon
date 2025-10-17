@@ -155,7 +155,7 @@ if __name__ == "__main__":
     generator = GoogleFormsGenerator('credentials.json')
     form_url = generator.create_quiz_from_json(
         questions,
-        form_title="Quiz"
+        form_title="MindfuLLM Generated Quiz"
     )
     
     with open("last_form_url.txt", "w") as f:
@@ -167,11 +167,12 @@ if __name__ == "__main__":
     email_subject = CONFIG.get("email_subject", "MindfuLLM Quiz")
     email_sender_name = CONFIG.get("email_sender_name")
     email_body = (
-        "Hello!,\n\n"
+        "Hello!\n\n"
         "Your MindfuLLM quiz is ready:\n"
         f"{form_url}\n\n"
-        "Recall and testing has been empirically shown to improve learning outcomes significantly. Enjoy your increased mastery!"
+        "Recall and testing has been empirically shown to improve learning outcomes significantly. Enjoy your increased mastery!\n\n"
         "You can share this link with others, or open it to make further edits and tweaks.\n\n"
+        "If you want to learn more about MindfuLLM, visit https://github.com/teachathon/teachathon.\n\n"
         "Best,\n"
         "MindfuLLM Team"
     )
