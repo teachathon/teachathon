@@ -9,4 +9,5 @@ configs/base.json
 base.json
 .env
 *.pyc
+.DS_Store
 
