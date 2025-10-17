@@ -1,12 +1,15 @@
 import json
 import os
-import sys
-from pathlib import Path
 import random
 import re
-from src.agent import Agent
-from src.forms_generator import GoogleFormsGenerator
+import sys
+from pathlib import Path
+
 from dotenv import load_dotenv
+
+from src.agent import Agent
+from src.email_sender import GmailEmailSender
+from src.forms_generator import GoogleFormsGenerator
 
 with open("./specs/base.json", "r") as j:
     SPEC_PATHS = json.loads(j.read())
@@ -160,3 +163,26 @@ if __name__ == "__main__":
     
     print("Answer distribution:", answer_balance)
     print(form_url)
+
+    email_subject = CONFIG.get("email_subject", "Your generated Google Form")
+    email_sender_name = CONFIG.get("email_sender_name")
+    email_body = (
+        "Hi there,\n\n"
+        "Here's the Google Form you just generated:\n"
+        f"{form_url}\n\n"
+        "You can share this link with your students or open it to make further edits.\n\n"
+        "Best,\n"
+        "Your Quiz Assistant"
+    )
+
+    try:
+        email_sender = GmailEmailSender("credentials.json", "token.gmail.pickle")
+        message_id = email_sender.send_email(
+            recipient=user_email,
+            subject=email_subject,
+            body=email_body,
+            sender_name=email_sender_name,
+        )
+        print(f"Emailed form link to {user_email} (message id: {message_id})")
+    except Exception as exc:
+        print(f"Unable to email form link: {exc}", file=sys.stderr)
