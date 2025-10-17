@@ -164,15 +164,16 @@ if __name__ == "__main__":
     print("Answer distribution:", answer_balance)
     print(form_url)
 
-    email_subject = CONFIG.get("email_subject", "Your generated Google Form")
+    email_subject = CONFIG.get("email_subject", "MindfuLLM Quiz")
     email_sender_name = CONFIG.get("email_sender_name")
     email_body = (
-        "Hi there,\n\n"
-        "Here's the Google Form you just generated:\n"
+        "Hello!,\n\n"
+        "Your MindfuLLM quiz is ready:\n"
         f"{form_url}\n\n"
-        "You can share this link with your students or open it to make further edits.\n\n"
+        "Recall and testing has been empirically shown to improve learning outcomes significantly. Enjoy your increased mastery!"
+        "You can share this link with others, or open it to make further edits and tweaks.\n\n"
         "Best,\n"
-        "Your Quiz Assistant"
+        "MindfuLLM Team"
     )
 
     try:
