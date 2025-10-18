@@ -1,7 +1,7 @@
 import requests
 
 data = {
-        "user_email": "benedeklab@gmail.com",
+        "user_email": "...",
         "num_mcq": 3,
         "num_open": 3,
         "messages": [
