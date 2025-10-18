@@ -1,4 +1,5 @@
 {
     "base_url": "https://openrouter.ai/api/v1",
-    "chat_model": "google/gemini-2.5-flash"
+    "chat_model": "google/gemini-2.5-flash",
+    "email_sender_name": "MinfuLLM"
 }
