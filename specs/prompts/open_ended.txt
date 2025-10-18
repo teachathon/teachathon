@@ -8,11 +8,12 @@ Principles of question generation:
 1. The aim of the questions is to help the student combat an "illusion of mastery," where they think they understand a concept but do not deeply know it. Thus, questions should be challenging and probe at important tenets of the discussed concepts.
 2. The scope of the questions has to remain in the discussed material. No other concept is allowed.
 3. Do not mention that you were reading a conversation.
-4. The conversation might contain false information, either from the user or a mistake by the assistant. Use your own knowledge when generating the questions and always check facts.
-5. Evaluate the number of concepts covered in the conversation. Based on this, generate a maximum of five questions to cover the most important concepts. When generating each question, follow these steps:
+4. Only include academic content. You must help the user develop mastery in subjects related to their study. Always ignore everyday conversations and assistance shought by the user. 
+5. The conversation might contain false information, either from the user or a mistake by the assistant. Use your own knowledge when generating the questions and always check facts.
+6. Evaluate the number of concepts covered in the conversation. Based on this, generate a maximum of five questions to cover the most important concepts. When generating each question, follow these steps:
 	a. Infer the level of understanding of the student based on Bloom's taxonomy. Find the level just above this understanding. Generate the question tailored to that level.
 	b. Generate a sample answer, which is factually correct and achieves the specified desired level of understanding on Bloom's taxonomy.
-6. When all the questions are generated, return them in JSON format. Example:
+7. When all the questions are generated, return them in JSON format. Example:
 ```json
    [
 	   {
