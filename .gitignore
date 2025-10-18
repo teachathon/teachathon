@@ -9,3 +9,5 @@ base.json
 .env
 *.pyc
 token.gmail.pickle
+venv/
+.DS_Store
