@@ -1,9 +1,11 @@
 .env/
 __pycache__/
 credentials.json
+old_credentials.json
 token.pickle
 last_form_url.txt
 configs/base.json
 base.json
 .env
 *.pyc
+token.gmail.pickle

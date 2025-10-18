@@ -7,6 +7,7 @@ class Message(BaseModel):
     content: str
 
 class ExtensionData(BaseModel):
+    user_email: str
     num_mcq: int
     num_open: int
     messages: List[Message]

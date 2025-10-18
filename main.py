@@ -13,6 +13,8 @@ from src.processing import (
     generate_questions,
     generate_title
 ) 
+from src.email import GmailEmailSender
+from src.email.utils import build_email_body
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -29,6 +31,7 @@ async def lifespan(app: FastAPI):
 
     app.state.agent = Agent(config=app.state.config)
     app.state.form_generator = GoogleFormsGenerator('credentials.json')
+    app.state.email_sender = GmailEmailSender('credentials.json')
 
     yield
 
@@ -67,5 +70,21 @@ async def receive_from_extension(data: ExtensionData):
     )
 
     print(f"Quiz generated at URL: {form_url}")
+
+    email_subject = f"MindfuLLM - {quiz_title}"
+    email_sender_name = app.state.config.get("email_sender_name")
+    email_body = build_email_body(form_url)
+
+    try:
+        message_id = app.state.email_sender.send_email(
+            recipient=data.user_email,
+            subject=email_subject,
+            body=email_body,
+            sender_name=email_sender_name
+        )
+        print(f"Emailed form link to {data.user_email} (message id: {message_id})")
+    except Exception as exc:
+         print(f"Unable to email form link: {exc}", file=sys.stderr)
+
 
     return {"status": "ok"}
