@@ -1,9 +1,0 @@
-You receive a list of questions in an academic quiz. 
-The questions follow a JSON format including metadata.
-Give a title to the quiz, which effectively summaryses the key topics covered, 
-so that it is straightforward to understand once one has to browse among past quizzes.
-
-Return your response in the format:
-{
-    "title": "..."
-}

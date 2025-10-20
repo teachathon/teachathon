@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MindfuLLM</title>
+        <link rel="icon" type="image/x-icon" href="../images/icons/favicon_128.png">
+        <link rel="stylesheet" href="style/style.css">
+        <!-- <script src="modules/less.min.js"></script> -->
+        <script src="../modules/jquery-3.7.1.min.js"></script>
+        <script src="../modules/store.js"></script>
+        <script src="scripts/store.js"></script>
+    </head>
+    <body>
+        <div class="main-container">
+            <div class="main-item">
+                <h1 class="text" id="title">
+                    MindfuLLM
+                </h1>
+            </div>
+            <div class="main-item setting" id="capturing">
+                <p1 class="setting-item description text">
+                    Capturing
+                </p1>
+                <img src="images/filter_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg">
+                <input type="checkbox" checked class="setting-item">
+            </div>
+            <div class="main-item setting" id="email">
+                <p1 class="setting-item description text">
+                    E-mail
+                </p1>
+                <input type="email" placeholder="johndoe@example.com" class="setting-item">
+            </div>
+            <div class="main-item setting" id="mcq">
+                <input type="number" value="7" min="0" max="100" class="setting-item">
+                <p1 class="setting-item description text">
+                    MCQs
+                </p1>
+            </div>
+            <div class="main-item setting" id="open-ended">
+                <input type="number" value="3" min="0" max="100" class="setting-item">
+                <p1 class="setting-item description text">
+                    open-ended questions
+                </p1>
+            </div>
+        </div>
+    </body>
+</html>
