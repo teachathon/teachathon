@@ -26,7 +26,7 @@ import requests
 data = {
         "num_mcq": 7,
         "num_open": 3,
-        "user_email": "user@gmail.com"
+        "user_email": "user@gmail.com",
         "messages": [
             {"conv_id": 0, "role": "user", "content": "Hey, can you tell me a bit about the rise of the Roman Empire?"},
             {"conv_id": 0, "role": "assistant", "content": "Of course! The Roman Empire rose from the Roman Republic around 27 BCE when Augustus became the first emperor. It marked a shift from a republic led by elected officials to a centralized imperial system."},
