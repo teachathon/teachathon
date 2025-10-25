@@ -4,11 +4,10 @@ configs/base.json
 credentials.json
 old_credentials.json
 token.pickle
+token.gmail.pickle
 last_form_url.txt
-configs/base.json
 base.json
 .env
 *.pyc
-token.gmail.pickle
 venv/
 .DS_Store
