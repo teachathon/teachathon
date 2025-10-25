@@ -7,5 +7,7 @@
     "open_ended": {
         "prompt": "./specs/prompts/open_ended.txt",
         "template": "./specs/templates/open_ended.json"
-    }
+    },
+
+    "quiz_title": "./specs/prompts/quiz_title.txt"
 }

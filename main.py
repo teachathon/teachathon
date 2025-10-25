@@ -1,88 +1,90 @@
+from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+import sys
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from api.schemas import ExtensionData
 from src.agent import Agent
 from src.forms_generator import GoogleFormsGenerator
-import json
-from pathlib import Path
-import random
+from src.processing import (
+    load_config, 
+    load_system_prompts,
+    resolve_api_key,
+    generate_questions,
+    generate_title
+) 
+from src.email import GmailEmailSender
+from src.email.utils import build_email_body
 
-with open("./specs/base.json", "r") as j:
-    SPEC_PATHS = json.loads(j.read())
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Server started.")
 
-SYSTEM_PROMPTS = {}
-for qtype in ["mcq", "open_ended"]:
-    SYSTEM_PROMPTS[qtype] = {}
-    for spec in ["prompt", "template"]:
-        file_path = Path(SPEC_PATHS[qtype][spec])
-        file_extension = file_path.suffix.lower()
-        with open(file_path, "r") as f:
-            SYSTEM_PROMPTS[qtype][spec] = json.loads(f.read()) if file_extension == ".json" else f.read()
+    app.state.config = load_config("./configs/base.json")
+    app.state.system_prompts = load_system_prompts("./specs/base.json")
 
-with open("./configs/base.json", "r") as j:
-    CONFIG = json.loads(j.read())
+    load_dotenv()
+    try:
+        app.state.config["api_key"] = resolve_api_key(app.state.config)
+    except RuntimeError as exc:
+        sys.exit(str(exc))
 
-with open("./test/conversations/dummy.txt", "r", encoding="utf-8") as f:
-    QUERY = f.read()
+    app.state.agent = Agent(config=app.state.config)
+    app.state.form_generator = GoogleFormsGenerator('credentials.json')
+    app.state.email_sender = GmailEmailSender('credentials.json')
 
-if __name__ == "__main__":
-    num_mcq = int(input("Enter number of MCQ questions to generate: "))
-    num_open = int(input("Enter number of open-ended questions to generate: "))
+    yield
 
-    agent = Agent(config=CONFIG)
-    agent.send_message(QUERY)
+    print("Server shutting down.")
 
-    questions = []
-    answer_balance = {"A": 0, "B": 0, "C": 0, "D": 0}
+app = FastAPI(lifespan=lifespan)
 
-    for i in range(num_mcq):
-        enhanced_prompt = SYSTEM_PROMPTS["mcq"]["prompt"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
-        if questions:
-            covered = "\n".join([f"- {q['question']}" for q in questions if q['type'] == 'mcq'])
-            enhanced_prompt += f"\n\nAlready generated questions:\n{covered}"
-        
-        total = sum(answer_balance.values()) + 1  
-        weights = []
-        for k in ["A", "B", "C", "D"]:
-        # Weight = inverse of frequency + small noise
-            weight = (total - answer_balance[k] + random.random()) / total
-            weights.append(weight)
-        chosen_correct = random.choices(["A", "B", "C", "D"], weights=weights, k=1)[0]
-
-
-        enhanced_prompt += f"\n\nFor this next question, ensure the correct answer is option '{chosen_correct}'."
-
-        response = agent.receive_response(
-            output_template=SYSTEM_PROMPTS["mcq"]["template"],
-            system_prompt=enhanced_prompt,
-            auto_append=False
-        )
-
-        response_content = json.loads(response["content"])
-
-        response_content["correct_answer"] = chosen_correct
-        answer_balance[chosen_correct] += 1
-        questions.append(response_content)
-
-    # Generate open-ended questions only once (after MCQs)
-    open_response = agent.receive_response(
-        output_template=SYSTEM_PROMPTS["open_ended"]["template"],
-        system_prompt=SYSTEM_PROMPTS["open_ended"]["prompt"] + f"\n\nGenerate exactly {num_open} open-ended questions.",
-        auto_append=False
+@app.post("/receive")
+async def receive_from_extension(data: ExtensionData):
+    print("Request received.")
+    
+    questions = generate_questions(
+        agent=app.state.agent,
+        messages=data.messages,
+        num_mcq=data.num_mcq,
+        num_open=data.num_open,
+        system_propmts=app.state.system_prompts
     )
-    open_content = json.loads(open_response["content"])
-    
-    if isinstance(open_content, list):
-        questions.extend(open_content[:num_open])
-    else:
-        questions.append(open_content)
-    
-    generator = GoogleFormsGenerator('credentials.json')
-    form_url = generator.create_quiz_from_json(
+
+    quiz_title = generate_title(
+        agent=app.state.agent,
+        questions=questions,
+        system_propmts=app.state.system_prompts
+    )
+
+    form_url = app.state.form_generator.create_quiz_from_json(
         questions,
-        form_title="Quiz"
+        form_title=quiz_title
     )
-    
-    with open("last_form_url.txt", "w") as f:
-        f.write(form_url)
-    
-    print("Answer distribution:", answer_balance)
-    print(form_url)
+
+    print(f"Quiz generated at URL: {form_url}")
+
+    email_subject = f"MindfuLLM - {quiz_title}"
+    email_sender_name = app.state.config.get("email_sender_name")
+    email_body = build_email_body(form_url)
+
+    try:
+        message_id = app.state.email_sender.send_email(
+            recipient=data.user_email,
+            subject=email_subject,
+            body=email_body,
+            sender_name=email_sender_name
+        )
+        print(f"Emailed form link to {data.user_email} (message id: {message_id})")
+    except Exception as exc:
+         print(f"Unable to email form link: {exc}", file=sys.stderr)
+
+
+    return {"status": "ok"}
