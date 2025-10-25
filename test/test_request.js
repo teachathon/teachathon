@@ -60,5 +60,4 @@ async function testRequest() {
         console.log('Make sure the server is running: npm start');
     }
 }
-
 testRequest();

@@ -13,7 +13,6 @@ import {
     generateTitle
 } from './src/processing.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -99,7 +98,7 @@ app.post('/receive', async (req, res) => {
                 emailBody,
                 emailSenderName
             );
-            console.log(`Emailed form link to ${user_email} (message id: ${messageId})`);
+            console.log(`Emailed form link to ${user_email}`);
         } catch (emailError) {
             console.error(`Unable to email form link: ${emailError.message}`);
         }
@@ -124,7 +123,7 @@ async function start() {
     
     app.listen(PORT, () => {
         console.log(`Server running on http://127.0.0.1:${PORT}`);
-        console.log(`API docs available at http://127.0.0.1:${PORT}/docs (if using Swagger)`);
+        console.log(`API docs available at http://127.0.0.1:${PORT}/docs`);
     });
 }
 

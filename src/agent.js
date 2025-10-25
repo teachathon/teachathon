@@ -262,8 +262,8 @@ export class Agent {
             
             return false;
         } catch (error) {
-            console.error('Validation parsing error:', error.message);
-            return false;
+            //console.error('Validation parsing error:', error.message);
+            //return false;
         }
     }
 }
