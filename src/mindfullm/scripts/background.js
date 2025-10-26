@@ -61,18 +61,40 @@ const messagesExample = [
   {"conv_id": 0, "role": "assistant", "content": "You’re very welcome! 😄 I’m glad it was helpful — dinosaurs are endlessly fascinating, and there’s always more to discover about them.\n\nIf you ever want, we can dive into weird dinosaur facts, feathered species, or even how scientists figure out what they looked like. Or, I can make some visual comparisons that really show how massive or strange they were.\n\nDo you want to explore any of those next?"}
 ]
 
-readSettings().then((settingValues) => {
-  const requestBody = {
-    "user_email": settingValues[settingsEnum.EMAIL_KEY],
-    "num_mcq": settingValues[settingsEnum.MCQ_KEY],
-    "num_open": settingValues[settingsEnum.OPEN_ENDED_KEY],
-    "messages": messagesExample
-  }
-  return fetch("http://127.0.0.1:8000/receive", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody)
-  }).then((response) => {
-    console.log(response);
-  });
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    const endpoint = request.action;
+    // const payload = request.data;
+    let success = false;
+    switch(endpoint) {
+        case "generate/form":
+            generateForm();
+            success = true;
+            break;
+    }
+
+    sendResponse({
+        success: true,
+        result: success
+    });
+
+    return true;
 });
+
+async function generateForm() {
+    readSettings().then((settingValues) => {
+        console.log(await chrome.storage.local.get("conversation"));
+        const requestBody = {
+            "user_email": settingValues[settingsEnum.EMAIL_KEY],
+            "num_mcq": settingValues[settingsEnum.MCQ_KEY],
+            "num_open": settingValues[settingsEnum.OPEN_ENDED_KEY],
+            "messages": 
+        }
+        return fetch("http://127.0.0.1:8000/receive", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody)
+        }).then((response) => {
+            console.log(response);
+        });
+    });
+}

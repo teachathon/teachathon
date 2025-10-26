@@ -1,0 +1,15 @@
+{
+  "name": "style",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "build:css": "lessc style.less style.out.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "less": "^4.4.2"
+  }
+}

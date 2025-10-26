@@ -10,4 +10,10 @@ const readSettings = async () => {
     return await chrome.storage.local.get(settingIds)
 }
 
-// export {settingsEnum, readSettings};
+const isCapturingAllowed = () => {
+    return readSettings().then((settingValues) => {
+        return settingValues[settingsEnum.CAPTURING_KEY]
+    })
+}
+
+// export {settingsEnum, readSettings, isCapturingAllowed};

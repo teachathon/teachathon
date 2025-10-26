@@ -15,7 +15,8 @@
     "host_permissions": [
         "https://chatgpt.com/*",
         "https://chat.com/*",
-        "https://chat.openai.com/*"
+        "https://chat.openai.com/*",
+        "https://elm.edina.ac.uk/elm/elm"
     ],
     "background": {
         "service_worker": "scripts/background.js"
@@ -29,7 +30,7 @@
                 "https://elm.edina.ac.uk/elm/elm"
             ],
             "js": [
-                "modules/jquery-3.7.1.min.js",
+                "modules/jquery.min.js",
                 "modules/store.js",
                 "scripts/content.js"
             ],

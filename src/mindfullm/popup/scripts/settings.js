@@ -40,13 +40,12 @@ $(document).ready(() => {
                 chrome.storage.local.set(
                     settingValues
                 );
-                console.log("changes saved");
             });
         }
     }
     
-    const mainContainer = $(".main-container");
-    const settingsInputs = getSettingInputs(mainContainer);
-    loadSettings(settingsInputs);
+    const settingsContainer = $(".settings");
+    const settingsInputs = getSettingInputs(settingsContainer);
     saveSettingsListener(settingsInputs);
+    loadSettings(settingsInputs);
 });

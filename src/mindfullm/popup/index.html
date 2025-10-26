@@ -3,43 +3,76 @@
     <head>
         <title>MindfuLLM</title>
         <link rel="icon" type="image/x-icon" href="../images/icons/favicon_128.png">
-        <link rel="stylesheet" href="style/style.css">
-        <!-- <script src="modules/less.min.js"></script> -->
-        <script src="../modules/jquery-3.7.1.min.js"></script>
+        <!-- <link rel="stylesheet/less" type="text/css" href="style/style.less"> -->
+        <link rel="stylesheet" type="text/css" href="style/style.out.css">
+        
+        <!-- begin external modules -->
+        <!-- <script
+            src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"
+            onerror="this.onerror = null; this.src = '../modules/jquery.min.js'">
+        </script> -->
+        <script src="../modules/jquery.min.js"></script>
+        <!-- <script
+            src="https://cdn.jsdelivr.net/npm/less@4.4.2/dist/less.min.js"
+            integrity="sha256-fsqeGDAYFiQfd3zPCwywp+xo+LSA6pvsiKxkRmVEZU4="
+            crossorigin="anonymous"
+            onerror="this.onerror = null; this.src = 'modules/less.min.js'">
+        </script> -->
+        <!-- end external modules -->
+                
         <script src="../modules/store.js"></script>
-        <script src="scripts/store.js"></script>
+        <script src="scripts/settings.js"></script>
+        <script src="scripts/actions.js"></script>
     </head>
     <body>
         <div class="main-container">
-            <div class="main-item">
-                <h1 class="text" id="title">
+            <div class="main-item" id="title">
+                <h1 class="text">
                     MindfuLLM
                 </h1>
             </div>
-            <div class="main-item setting" id="capturing">
-                <p1 class="setting-item description text">
-                    Capturing
-                </p1>
-                <img src="images/filter_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg">
-                <input type="checkbox" checked class="setting-item">
+            <div class="main-item description settings" id="settings-description">
+                <h2 class="description-item">settings</h2>
             </div>
-            <div class="main-item setting" id="email">
-                <p1 class="setting-item description text">
-                    E-mail
-                </p1>
-                <input type="email" placeholder="johndoe@example.com" class="setting-item">
+            <div class="main-item settings">
+                <div class="setting action" id="capturing">
+                    <p1 class="setting-item description text">
+                        Capturing
+                    </p1>
+                    <img src="images/filter_alt_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg">
+                    <input type="checkbox" checked class="setting-item">
+                </div>
+                <div class="setting" id="email">
+                    <p1 class="setting-item description text">
+                        E-mail
+                    </p1>
+                    <input type="email" placeholder="johndoe@example.com" class="setting-item">
+                </div>
+                <div class="setting" id="mcq">
+                    <input type="number" value="7" min="0" max="100" class="setting-item">
+                    <p1 class="setting-item description text">
+                        MCQs
+                    </p1>
+                </div>
+                <div class="setting" id="open-ended">
+                    <input type="number" value="3" min="0" max="100" class="setting-item">
+                    <p1 class="setting-item description text">
+                        open-ended questions
+                    </p1>
+                </div>
             </div>
-            <div class="main-item setting" id="mcq">
-                <input type="number" value="7" min="0" max="100" class="setting-item">
-                <p1 class="setting-item description text">
-                    MCQs
-                </p1>
+            <div class="main-item delimiter"></div>
+            <div class="main-item description actions" id="actions-description">
+                <h2 class="description-item">actions</h2>
             </div>
-            <div class="main-item setting" id="open-ended">
-                <input type="number" value="3" min="0" max="100" class="setting-item">
-                <p1 class="setting-item description text">
-                    open-ended questions
-                </p1>
+            <div class="main-item actions">
+                <div class="actions-item action" id="generate">
+                    <button class="action-item">
+                        Generate Now
+                    </button>
+                </div>
             </div>
         </div>
     </body>

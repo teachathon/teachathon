@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+@title-colour: #87CEEB;
+@setting-description-colour: #FFFFFF;
+@main-background-colour: #1F1F1F;
+@body-background-colour: #000000;
+@input-background-colour: #919191;
+@input-colour: #FFFFFF;
+@input-border-colour: @title-colour;
+@action-border-colour: #000000;
+@capturing-background-colour: #FFFFFF;
+@capturing-colour: #000000;
+@action-colour: #000000;
+@action-background-colour: #FFFFFF;
+@main-border-radius: 10px;
+@input-border-radius: 7.5px;
+@main-gap: 10px;
+@settings-gap: 7px;
+@main-padding: 10px;
+@main-inline-padding: 5px;
+@setting-padding: 20px;
+@input-padding: 5px;
+@input-border-width: 1.5px;
+@action-border-width: 2.5px;
+@capturing-font-size: 20px;
+@setting-font-size: 14px;
+
+body {
+    width: 400px !important;
+    background-color: @body-background-colour;
+    font-family: "Fredoka", sans-serif;
+    user-select: none;
+    select: none;
+}
+
+button {
+    font-family: "Fredoka", sans-serif;
+}
+
+.main-container {
+    display: grid;
+    margin: @main-padding @main-inline-padding;
+    padding: (@settings-gap + @main-padding) @main-padding;
+    grid-template-areas:
+        "title                title"
+        "settings-description settings"
+        "_                    delimiter"
+        "actions-description  actions";
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(2, auto);
+    justify-items: center;
+    align-items: center;
+    gap: @main-gap 0;
+    border-radius: @main-border-radius;
+    background-color: @main-background-colour;
+}
+
+.main-item {
+    &#title {    
+        grid-area: title;
+
+        h1 {
+            margin: 0 0 @settings-gap 0;
+            text-align: center;
+            color: @title-colour;
+        }
+    }
+
+    &.description {        
+        .description-item {
+            margin: 5px;
+            padding: 0;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            color: @title-colour;
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        &.settings {
+            grid-area: settings-description;
+        }
+        &.actions {
+            grid-area: actions-description;
+        }
+    }
+
+    &.settings:not(.description) {
+        grid-area: settings;
+        display: flex;
+        flex-direction: column;
+        row-gap: @settings-gap;
+        
+        .setting {
+            display: flex;
+            padding-inline: @setting-padding;
+            flex-direction: row;
+            align-items: center;
+            column-gap: @main-gap;
+            border-radius: @main-border-radius;
+            color: @setting-description-colour;
+
+            .setting-item {
+                width: 100%;
+
+                .description {
+                    max-height: fit-content !important;
+                }
+
+                &:is(input) {
+                    color: @input-colour;
+                    background-color: @input-background-colour;
+                    
+                    &:is(
+                            [type="text"],
+                            [type="email"],
+                            [type="number"]
+                        ){
+                        padding: @input-padding;
+                        border: @input-border-colour @input-border-width dashed;
+                        border-radius: @input-border-radius;
+                        background-color: @body-background-colour;
+
+                        &:focus {
+                            border-style: solid;
+                            outline: none !important;
+                        }
+                    }
+                    
+                    &[type="number"] {
+                        -webkit-appearance: textfield;
+                        -moz-appearance: textfield;
+                        appearance: textfield;
+
+                        &::-webkit-inner-spin-button,
+                        &::-webkit-outer-spin-button {
+                            -webkit-appearance: none;
+                            appearance: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    &.delimiter {
+        grid-area: delimiter;
+        width: 100%;
+        height: 3px;
+        background-color: @input-colour;
+        border-radius: @main-border-radius;
+    }
+
+    &.actions {
+        grid-area: actions;
+
+        button {
+            width: 170px;
+            padding: 10px 0 10px 0;
+            border: @action-border-colour @action-border-width dashed;
+            border-radius: @input-border-radius;
+            font-size: 15px;
+            color: @action-colour;
+            background-color: @action-background-colour;
+            cursor: pointer;
+
+            &::after {
+                display: inline;
+                content: "!";
+            }
+
+            &:hover {
+                &::after {
+                    content: "?";
+                }
+            }
+
+            &:active {
+                border-style: solid;
+            }
+        }
+    }
+}
+
+.setting {
+    .description {
+        font-size: @setting-font-size;
+    }
+
+    &#capturing {
+        margin-inline: 5px;
+        padding: @input-padding;
+        border-radius: @main-border-radius;
+        color: @capturing-colour;
+        background-color: @capturing-background-colour;
+
+        .description {
+            font-size: @capturing-font-size !important;
+        }
+
+        input {
+            width: fit-content;
+            cursor: pointer;
+        }
+    }
+
+    &#email {
+        input {
+            width: 200px;
+        }
+    }
+
+    &#mcq, &#open-ended {
+        input {
+            width: 25px;
+            text-align: right !important;
+        }
+    }
+}
