@@ -36,11 +36,11 @@ async function capturingNotification(input) {
 }
 
 $(document).ready(() => {
-    const actionsMapping = {
-        "generate": [generateForm],
-        "capturing": [capturingNotification]
-    };
-
+    const actionsMapping = new StaticMapping(
+        ["generate", [generateForm]],
+        ["capturing", [capturingNotification]]
+    );
+    
     const getActionInputs = (mainContainer) => {
         const actions = mainContainer.find(".action");
         const actionInputs = actions.map(function() {
@@ -56,7 +56,8 @@ $(document).ready(() => {
     
     const actionsActivationListener = (actionInputs) => {
         for(const [id, input] of Object.entries(actionInputs)) {
-            const actionCall = actionsMapping[id]
+            const actionCall = actionsMapping.map(id);
+            console.log(actionCall);
             const eventType = input.is("button") ? "click" : "change";
             input.on(eventType, function(e) {
                 const action = $(this);

@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             success = true;
             break;
     }
-
+    
     sendResponse({
         success: true,
         result: success

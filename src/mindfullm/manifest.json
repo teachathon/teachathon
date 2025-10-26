@@ -31,6 +31,7 @@
             ],
             "js": [
                 "modules/jquery.min.js",
+                "modules/mapping.js",
                 "modules/store.js",
                 "scripts/content.js"
             ],
